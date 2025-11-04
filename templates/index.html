@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Consumption Prediction</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 700px;
+            margin-top: 50px;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: #ffffff;
+        }
+        .result-box {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 6px;
+            background-color: #e9ecef;
+            border: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 class="text-center mb-4 text-primary">⚡ Coal Consumption Predictor</h2>
+    <p class="text-center mb-4">Predict Daily Power Generation System Consumption (Target:Coal Consumption)</p>
+
+    <form action="{{ url_for('predict_datapoint') }}" method="POST" class="row g-3">
+        
+        <div class="col-md-6">
+            <label for="date" class="form-label">Calendar Day (Date)</label>
+            <input type="date" class="form-control" id="date" name="date" required 
+                   value="{{ prediction_date if prediction_date else '' }}">
+        </div>
+        <div class="col-md-6">
+            <label for="NSR" class="form-label">Normative Stock Required (t)</label>
+            <input type="number" step="0.01" class="form-control" id="NSR" name="NSR" placeholder="e.g., 2000" required>
+        </div>
+
+        <div class="col-md-6">
+            <label for="Receipt" class="form-label">Receipt Of The Day (t)</label>
+            <input type="number" step="0.01" class="form-control" id="Receipt" name="Receipt" placeholder="e.g., 100" required>
+        </div>
+        <div class="col-md-6">
+            <label for="MC" class="form-label">Monitored Capacity (MW) - Coal</label>
+            <input type="number" step="0.01" class="form-control" id="MC" name="MC" placeholder="e.g., 25000" required>
+        </div>
+
+        <div class="col-md-6">
+            <label for="EC" class="form-label">Electricity Generated (MU) - Coal</label>
+            <input type="number" step="0.01" class="form-control" id="EC" name="EC" placeholder="e.g., 1000" required>
+        </div>
+        <div class="col-md-6">
+            <label for="EN" class="form-label">Electricity Generated (MU) - Nuclear</label>
+            <input type="number" step="0.01" class="form-control" id="EN" name="EN" placeholder="e.g., 50" required>
+        </div>
+
+        <div class="col-12">
+            <label for="EH" class="form-label">Electricity Generated (MU) - Hydro</label>
+            <input type="number" step="0.01" class="form-control" id="EH" name="EH" placeholder="e.g., 150" required>
+        </div>
+        
+        <div class="col-12 mt-4">
+            <button type="submit" class="btn btn-primary w-100">Predict Consumption</button>
+        </div>
+    </form>
+
+    {% if results %}
+    <div class="result-box text-center">
+        <h4>Prediction for **{{ prediction_date }}**</h4>
+        <h3 class="text-success">{{ results }}</h3>
+        <small class="text-muted">The prediction is an estimate of fuel usage for the day.</small>
+    </div>
+    {% endif %}
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
