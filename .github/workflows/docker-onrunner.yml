@@ -1,0 +1,23 @@
+name: Run Docker Image
+
+on:
+  workflow_dispatch:   # allows manual trigger
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      
+      - name: Build Docker image
+        run: |
+          docker build -t my-app:latest .
+
+      
+      - name: Run container
+        run: |
+          docker run -d --name my-app -p 8000:8000 my-app:latest
