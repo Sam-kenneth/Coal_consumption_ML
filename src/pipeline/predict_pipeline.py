@@ -36,11 +36,11 @@ class PredictPipeline:
 
 class CustomData:
     def __init__(self,
-                 date: str, # New: Date for prediction (YYYY-mm-dd)
+                 date: str, 
                  NSR: float,
                  Receipt: float,
                  MC: float,
-                 EC: float,
+                 #EC: float,
                  EN: float,
                  EH: float):
         
@@ -48,7 +48,7 @@ class CustomData:
         self.NSR = NSR
         self.Receipt = Receipt
         self.MC = MC
-        self.EC = EC
+        #self.EC = EC
         self.EN = EN
         self.EH = EH
 
@@ -63,7 +63,7 @@ class CustomData:
                 'Receipt': [self.Receipt],
                 'Consumption': [np.nan], # Target is unknown for prediction
                 'Monitored Capacity(coal)': [self.MC],
-                'Electricity Generated_Coal': [self.EC],
+                #'Electricity Generated_Coal': [self.EC],
                 'Electricity Generated_Nuclear': [self.EN],
                 'Electricity Generated_Hydro': [self.EH]
             }

@@ -43,7 +43,7 @@ class DataTransformation(BaseEstimator, TransformerMixin):
             df[self.prefix + 'month_cos'] = np.cos(2 * np.pi * dt.month / 12)
             df[self.prefix + 'days_since_start'] = (dt - dt[0]).days
 
-            # Lag and rolling features for all columns
+            # Lag and rolling features 
             for col in original_cols:
                 df[f'{col}_lag_1'] = df[col].shift(1)
                 df[f'{col}_roll_mean_7d'] = df[col].rolling(7, min_periods=1).mean().shift(1)
@@ -58,7 +58,7 @@ class DataTransformation(BaseEstimator, TransformerMixin):
     def initate_data_transformation(self,train_path,test_path):
 
         try:
-            # Reading train and test data
+            
             train_df = pd.read_csv(train_path, index_col=0, parse_dates=True)
             test_df = pd.read_csv(test_path, index_col=0, parse_dates=True)
 

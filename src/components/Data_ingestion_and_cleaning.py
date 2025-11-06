@@ -3,19 +3,19 @@ import sys
 from src.exception import CustomException
 from src.logger import logging
 import pandas as pd
-from sklearn.model_selection import train_test_split
+
 from dataclasses import dataclass
 
 from src.components.Data_spliting import Dataspliting, DatasplitingConfig
 from src.components.data_transformation import DataTransformation, DataTransformationConfig
 from src.components.model_trainer import ModelTrainer, ModelTrainerConfig
 
-# Initialize Data Ingestion Configuration
+
 @dataclass
 class DataIngestionConfig:
     raw_data_path: str = os.path.join('artifacts','data.csv')
 
-# Create a class for Data Ingestion
+
 class DataIngestion:
     def __init__(self):
         self.ingestion_config = DataIngestionConfig()
@@ -23,8 +23,9 @@ class DataIngestion:
     def initate_data_ingestion(self):
         logging.info('Data ingestion method Started')
         try:
-            PowerGen = pd.read_csv("notebook/data/Daily Power Generation Reports.csv") 
-            CoalStock = pd.read_csv("notebook/data/Daily Coal Stock Report.csv") 
+            PowerGen = pd.read_csv("notebook/Data/Daily_Power_Generation_Reports.csv",low_memory=False) 
+            CoalStock = pd.read_csv("notebook/Data/Daily_Coal_Stock_Report.csv",low_memory=False) 
+ 
             logging.info('Datasets read as pandas Dataframe')
             
             PowerGen = PowerGen.drop(columns=['Country','Year', 'State Or Plant Name','Classification Of Plants', 'Mode Of Transport','Name Of Thermal Power Station Or Performance Of Utility', 'Type Of Sector','Name Of The Utility'])
@@ -56,7 +57,7 @@ class DataIngestion:
             df = df[(df['Consumption'] != 0) & (df['Consumption'] < 3000)].copy()
             df = df.set_index('Calendar Day')
 
-            columns_to_drop = ['Indigenous Stock', 'Import','Electricity Production Target(coal)']
+            columns_to_drop = [ 'Indigenous Stock','Import','Electricity Production Target(coal)','Electricity Generated_Coal']
             df = df.drop(columns=columns_to_drop, axis=1)
             
             os.makedirs(os.path.dirname(self.ingestion_config.raw_data_path),exist_ok=True)
@@ -71,7 +72,6 @@ class DataIngestion:
             logging.info('Exception occured at Data Ingestion stage')
             raise CustomException(e, sys)
     
-# Run Data ingestion
 if __name__ == '__main__':
     obj = DataIngestion()
     df = obj.initate_data_ingestion()
