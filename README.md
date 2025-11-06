@@ -39,7 +39,8 @@ B. Run the Container
 
 The application will first execute the data cleaning/ingestion script (Data_ingestion_and_cleaning.py) and then launch the main application (application.py), which typically hosts the trained model or a basic web service.
 
-# This command runs the container and removes it automatically after exit
+This command runs the container and removes it automatically after exit
+
 docker run --rm -p 8000:8000 coal_consumption_app
 
 
@@ -56,10 +57,10 @@ pip install -r requirements.txt
 
 Run the Pipeline:
 
-# Step 1: Ingest and clean the data
+ Step 1: Ingest and clean the data
 python src/components/Data_ingestion_and_cleaning.py
 
-# Step 2: Run the main application
+ Step 2: Run the main application
 python application.py
 
 
